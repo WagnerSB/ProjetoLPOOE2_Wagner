@@ -1,20 +1,20 @@
-
 package sistemasemanaacademica.dao;
 
-
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
+import model.Aluno;
 
+public class PersistenciaJPA implements InterfaceDB {
 
-public class PersistenciaJPA implements InterfaceDB{
-    
     EntityManager entity;
     EntityManagerFactory factory;
-    
-    public PersistenciaJPA(){
-        factory = Persistence.createEntityManagerFactory("ProjetoLPOOE1_Wagner");
-        
+
+    public PersistenciaJPA() {
+        factory = Persistence.createEntityManagerFactory("ProjetoLPOOE2_Wagner");
+
         entity = factory.createEntityManager();
     }
 
@@ -36,21 +36,19 @@ public class PersistenciaJPA implements InterfaceDB{
     @Override
     public void persist(Object o) throws Exception {
         entity = getEntityManager();
-        try{
-        entity.getTransaction().begin();
-        entity.persist(o);
-        entity.getTransaction().commit();
-        } catch (Exception e)
-        {
-            if(entity.getTransaction().isActive()){
+        try {
+            entity.getTransaction().begin();
+            entity.persist(o);
+            entity.getTransaction().commit();
+        } catch (Exception e) {
+            if (entity.getTransaction().isActive()) {
                 entity.getTransaction().rollback();
             }
         }
     }
-    
-    public EntityManager getEntityManager(){
-        if (entity == null || !entity.isOpen())
-        {
+
+    public EntityManager getEntityManager() {
+        if (entity == null || !entity.isOpen()) {
             entity = factory.createEntityManager();
         }
         return entity;
@@ -59,16 +57,50 @@ public class PersistenciaJPA implements InterfaceDB{
     @Override
     public void remover(Object o) throws Exception {
         entity = getEntityManager();
-        try{
-        entity.getTransaction().begin();
-        entity.remove(o);
-        entity.getTransaction().commit();
-        } catch (Exception e)
-        {
-            if(entity.getTransaction().isActive()){
+//        System.out.println("Object: "+o);
+        try {
+            entity.getTransaction().begin();
+            if (!entity.contains(o)) {
+                o = entity.merge(o);
+            }
+            entity.remove(o);
+            entity.flush();
+            entity.getTransaction().commit();
+        } catch (Exception e) {
+            System.err.println("Erro ao remover item: " + e);
+            if (entity.getTransaction().isActive()) {
                 entity.getTransaction().rollback();
             }
         }
     }
     
+
+    public List<Aluno> getAlunos() {
+        entity = getEntityManager();
+
+        try {
+            TypedQuery<Aluno> query
+                    = entity.createQuery("Select a from Aluno a", Aluno.class);
+            return query.getResultList();
+        } catch (Exception e) {
+            System.err.println("Erro ao buscar Alunos: " + e);
+            return null;
+        }
+
+    }
+    
+    public List<Aluno> getAlunos(String nome) {
+        entity = getEntityManager();
+
+        try {
+            TypedQuery<Aluno> query
+                    = entity.createQuery("Select a from Aluno a where lower(a.nome) LIKE :n", Aluno.class);
+            query.setParameter("n", "%" + nome.toLowerCase() + "%");
+            return query.getResultList();
+        } catch (Exception e) {
+            System.err.println("Erro ao buscar Alunos: " + e);
+            return null;
+        }
+
+    }
 }

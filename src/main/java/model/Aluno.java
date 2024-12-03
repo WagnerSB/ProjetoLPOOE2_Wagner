@@ -55,4 +55,11 @@ public class Aluno extends Pessoa{
     public void addOficina(Oficina o){
         this.oficinas.add(o);
     }
+
+    @Override
+    public String toString() {
+        return super.getNome() + " - " + this.matricula;
+    }
+    
+    
 }
