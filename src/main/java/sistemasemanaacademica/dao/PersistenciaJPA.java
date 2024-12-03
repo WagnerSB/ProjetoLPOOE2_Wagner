@@ -35,12 +35,28 @@ public class PersistenciaJPA implements InterfaceDB {
 
     @Override
     public void persist(Object o) throws Exception {
+//        entity = getEntityManager();
+//        try {
+//            entity.getTransaction().begin();
+//            entity.persist(o);
+//            entity.getTransaction().commit();
+//        } catch (Exception e) {
+//            if (entity.getTransaction().isActive()) {
+//                entity.getTransaction().rollback();
+//            }
+//        }
+//        
         entity = getEntityManager();
         try {
             entity.getTransaction().begin();
-            entity.persist(o);
+            if (!entity.contains(o)) {;
+                o = entity.merge(o);
+            } else {
+                entity.persist(o);
+            }
             entity.getTransaction().commit();
         } catch (Exception e) {
+            System.out.println("Erro ao persistir: "+e);
             if (entity.getTransaction().isActive()) {
                 entity.getTransaction().rollback();
             }

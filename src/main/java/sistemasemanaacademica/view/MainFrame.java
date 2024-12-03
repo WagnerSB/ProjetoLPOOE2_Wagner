@@ -78,7 +78,8 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnMinistranteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMinistranteActionPerformed
-        // TODO add your handling code here:
+//        TelaMinistrante telaMinistrante = new TelaMinistrante();
+//        telaMinistrante.setVisible(true);
     }//GEN-LAST:event_btnMinistranteActionPerformed
 
     private void btnAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlunoActionPerformed

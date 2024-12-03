@@ -33,7 +33,7 @@ public class Oficina implements Serializable{
     private double duracao;
     
     
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(name = "tb_aluno_oficina", joinColumns = @JoinColumn(name = "oficina_id"), inverseJoinColumns = @JoinColumn(name = "aluno_id"))
     private List<Aluno> alunos;
 
