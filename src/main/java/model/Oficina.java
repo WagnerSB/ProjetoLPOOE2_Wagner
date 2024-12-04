@@ -2,6 +2,7 @@
 package model;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -119,7 +120,12 @@ public class Oficina implements Serializable{
     public void addAluno(Aluno a) {
         alunos.add(a);
     }
-    
+
+    @Override
+    public String toString() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        return this.nome + " - " + sdf.format(this.data);
+    }
     
     
 }

@@ -6,6 +6,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 import model.Aluno;
+import model.Ministrante;
+import model.Oficina;
 
 public class PersistenciaJPA implements InterfaceDB {
 
@@ -115,6 +117,66 @@ public class PersistenciaJPA implements InterfaceDB {
             return query.getResultList();
         } catch (Exception e) {
             System.err.println("Erro ao buscar Alunos: " + e);
+            return null;
+        }
+
+    }
+    
+    
+    public List<Ministrante> getMinistrantes() {
+        entity = getEntityManager();
+
+        try {
+            TypedQuery<Ministrante> query
+                    = entity.createQuery("Select m from Ministrante m", Ministrante.class);
+            return query.getResultList();
+        } catch (Exception e) {
+            System.err.println("Erro ao buscar Ministrantes: " + e);
+            return null;
+        }
+
+    }
+    
+    public List<Ministrante> getMinistrantes(String nome) {
+        entity = getEntityManager();
+
+        try {
+            TypedQuery<Ministrante> query
+                    = entity.createQuery("Select m from Ministrante m where lower(m.nome) LIKE :n", Ministrante.class);
+            query.setParameter("n", "%" + nome.toLowerCase() + "%");
+            return query.getResultList();
+        } catch (Exception e) {
+            System.err.println("Erro ao buscar Ministrantes: " + e);
+            return null;
+        }
+
+    }
+    
+    
+    public List<Oficina> getOficinas() {
+        entity = getEntityManager();
+
+        try {
+            TypedQuery<Oficina> query
+                    = entity.createQuery("Select o from Oficina o", Oficina.class);
+            return query.getResultList();
+        } catch (Exception e) {
+            System.err.println("Erro ao buscar Oficinas: " + e);
+            return null;
+        }
+
+    }
+    
+    public List<Oficina> getOficinas(String nome) {
+        entity = getEntityManager();
+
+        try {
+            TypedQuery<Oficina> query
+                    = entity.createQuery("Select o from Oficina o where lower(o.nome) LIKE :n", Oficina.class);
+            query.setParameter("n", "%" + nome.toLowerCase() + "%");
+            return query.getResultList();
+        } catch (Exception e) {
+            System.err.println("Erro ao buscar Oficinas: " + e);
             return null;
         }
 

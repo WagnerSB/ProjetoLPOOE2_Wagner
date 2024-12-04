@@ -41,6 +41,11 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         btnOficina.setText("Oficina");
+        btnOficina.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOficinaActionPerformed(evt);
+            }
+        });
 
         btnMinistrante.setText("Ministrante");
         btnMinistrante.addActionListener(new java.awt.event.ActionListener() {
@@ -78,14 +83,19 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnMinistranteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMinistranteActionPerformed
-//        TelaMinistrante telaMinistrante = new TelaMinistrante();
-//        telaMinistrante.setVisible(true);
+        TelaMinistrante telaMinistrante = new TelaMinistrante();
+        telaMinistrante.setVisible(true);
     }//GEN-LAST:event_btnMinistranteActionPerformed
 
     private void btnAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlunoActionPerformed
         TelaAluno telaAluno = new TelaAluno();
         telaAluno.setVisible(true);
     }//GEN-LAST:event_btnAlunoActionPerformed
+
+    private void btnOficinaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOficinaActionPerformed
+        TelaOficina telaOficina = new TelaOficina();
+        telaOficina.setVisible(true);
+    }//GEN-LAST:event_btnOficinaActionPerformed
 
     /**
      * @param args the command line arguments

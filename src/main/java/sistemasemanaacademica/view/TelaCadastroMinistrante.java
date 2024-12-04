@@ -6,33 +6,35 @@ package sistemasemanaacademica.view;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.Aluno;
+import model.Ministrante;
 import sistemasemanaacademica.dao.PersistenciaJPA;
 
 /**
  *
  * @author 20231PF.CC0021
  */
-public class TelaCadastroAluno extends javax.swing.JDialog {
-    private Aluno aluno;
+public class TelaCadastroMinistrante extends javax.swing.JDialog {
+    private Ministrante ministrante;
     PersistenciaJPA jpa;
     
     
 
-    public Aluno getAluno() {
-        return aluno;
+    public Ministrante getMinistrante() {
+        return ministrante;
     }
 
-    public void setAluno(Aluno aluno) {
-        this.aluno = aluno;
-        txtNome.setText(aluno.getNome());
-        txtMatricula.setText(aluno.getMatricula());
-        txtEmail.setText(aluno.getEmail());
+    public void setMinistrante(Ministrante ministrante) {
+        this.ministrante = ministrante;
+        txtNome.setText(ministrante.getNome());
+        txtEspecialidade.setText(ministrante.getEspecialidade());
+        txtTitulacao.setText(ministrante.getTitulacao());
+        txtEmail.setText(ministrante.getEmail());
 
 
-        LocalDate dataNascimento = aluno.getDataNascimento(); // Supondo que seja java.time.LocalDate
+        LocalDate dataNascimento = ministrante.getDataNascimento(); // Supondo que seja java.time.LocalDate
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String dataFormatada = dataNascimento.format(formato);
         txtDataNascimento.setText(dataFormatada);
@@ -41,9 +43,9 @@ public class TelaCadastroAluno extends javax.swing.JDialog {
     
 
     /**
-     * Creates new form TelaCadastroAluno
+     * Creates new form TelaCadastroMinistrante
      */
-    public TelaCadastroAluno(java.awt.Frame parent, boolean modal) {
+    public TelaCadastroMinistrante(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         jpa = new PersistenciaJPA();
@@ -61,14 +63,16 @@ public class TelaCadastroAluno extends javax.swing.JDialog {
         lblCadastroAluno = new javax.swing.JLabel();
         lblNome = new javax.swing.JLabel();
         txtNome = new javax.swing.JTextField();
-        lblMatricula = new javax.swing.JLabel();
-        txtMatricula = new javax.swing.JTextField();
+        lblEspecialidade = new javax.swing.JLabel();
+        txtEspecialidade = new javax.swing.JTextField();
         lblEmail = new javax.swing.JLabel();
         txtEmail = new javax.swing.JTextField();
         btnSalvar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         lblDataNascimento = new javax.swing.JLabel();
         txtDataNascimento = new javax.swing.JTextField();
+        txtTitulacao = new javax.swing.JTextField();
+        lblTitulacao = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -77,7 +81,7 @@ public class TelaCadastroAluno extends javax.swing.JDialog {
 
         lblNome.setText("Nome: ");
 
-        lblMatricula.setText("Matricula:");
+        lblEspecialidade.setText("Especialidade:");
 
         lblEmail.setText("E-mail:");
 
@@ -103,6 +107,14 @@ public class TelaCadastroAluno extends javax.swing.JDialog {
             }
         });
 
+        txtTitulacao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTitulacaoActionPerformed(evt);
+            }
+        });
+
+        lblTitulacao.setText("Titulacao:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -116,20 +128,22 @@ public class TelaCadastroAluno extends javax.swing.JDialog {
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                             .addGap(38, 38, 38)
                             .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 127, Short.MAX_VALUE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 133, Short.MAX_VALUE)
                             .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(lblEmail)
                                 .addComponent(lblDataNascimento)
-                                .addComponent(lblMatricula))
+                                .addComponent(lblEspecialidade))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtNome, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
-                                .addComponent(txtMatricula)
+                                .addComponent(txtNome, javax.swing.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE)
+                                .addComponent(txtEspecialidade)
                                 .addComponent(txtEmail)
-                                .addComponent(txtDataNascimento))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, Short.MAX_VALUE))))
+                                .addComponent(txtDataNascimento)
+                                .addComponent(txtTitulacao, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, Short.MAX_VALUE)))
+                    .addComponent(lblTitulacao))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -143,8 +157,8 @@ public class TelaCadastroAluno extends javax.swing.JDialog {
                     .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblMatricula)
-                    .addComponent(txtMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblEspecialidade)
+                    .addComponent(txtEspecialidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblEmail)
@@ -153,7 +167,11 @@ public class TelaCadastroAluno extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblDataNascimento)
                     .addComponent(txtDataNascimento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTitulacao)
+                    .addComponent(txtTitulacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSalvar)
                     .addComponent(btnCancelar))
@@ -164,22 +182,23 @@ public class TelaCadastroAluno extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        if(aluno == null) {
-            aluno = new Aluno();
+        if(ministrante == null) {
+            ministrante = new Ministrante();
         }
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         
-        aluno.setNome(txtNome.getText());
-        aluno.setDataNascimento(LocalDate.parse(txtDataNascimento.getText(),dtf));
-        aluno.setEmail(txtEmail.getText());
-        aluno.setMatricula(txtMatricula.getText());
+        ministrante.setNome(txtNome.getText());
+        ministrante.setDataNascimento(LocalDate.parse(txtDataNascimento.getText(),dtf));
+        ministrante.setEmail(txtEmail.getText());
+        ministrante.setEspecialidade(txtEspecialidade.getText());
+        ministrante.setTitulacao(txtTitulacao.getText());
         
         jpa.conexaoAberta();
         try {
-            jpa.persist(aluno);
+            jpa.persist(ministrante);
         } catch (Exception e) {
-            Logger.getLogger(TelaAluno.class.getName()).log(Level.SEVERE, null, e);
-            System.out.println("Erro ao persistir aluno: "+aluno+" \n Erro: "+e);
+            Logger.getLogger(TelaMinistrante.class.getName()).log(Level.SEVERE, null, e);
+            System.out.println("Erro ao persistir ministrante: "+ministrante+" \n Erro: "+e);
         }
         jpa.fecharConexao();
         dispose();
@@ -194,39 +213,19 @@ public class TelaCadastroAluno extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtDataNascimentoActionPerformed
 
+    private void txtTitulacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTitulacaoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTitulacaoActionPerformed
+
     
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaCadastroAluno.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaCadastroAluno.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaCadastroAluno.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TelaCadastroAluno.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
 
-        /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                TelaCadastroAluno dialog = new TelaCadastroAluno(new javax.swing.JFrame(), true);
+                TelaCadastroMinistrante dialog = new TelaCadastroMinistrante(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -245,11 +244,13 @@ public class TelaCadastroAluno extends javax.swing.JDialog {
     private javax.swing.JLabel lblCadastroAluno;
     private javax.swing.JLabel lblDataNascimento;
     private javax.swing.JLabel lblEmail;
-    private javax.swing.JLabel lblMatricula;
+    private javax.swing.JLabel lblEspecialidade;
     private javax.swing.JLabel lblNome;
+    private javax.swing.JLabel lblTitulacao;
     private javax.swing.JTextField txtDataNascimento;
     private javax.swing.JTextField txtEmail;
-    private javax.swing.JTextField txtMatricula;
+    private javax.swing.JTextField txtEspecialidade;
     private javax.swing.JTextField txtNome;
+    private javax.swing.JTextField txtTitulacao;
     // End of variables declaration//GEN-END:variables
 }
