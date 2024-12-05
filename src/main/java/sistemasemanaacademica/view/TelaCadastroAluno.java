@@ -31,11 +31,15 @@ public class TelaCadastroAluno extends javax.swing.JDialog {
         txtMatricula.setText(aluno.getMatricula());
         txtEmail.setText(aluno.getEmail());
 
-
+        try{
         LocalDate dataNascimento = aluno.getDataNascimento(); // Supondo que seja java.time.LocalDate
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String dataFormatada = dataNascimento.format(formato);
-        txtDataNascimento.setText(dataFormatada);
+        txtDataNascimento.setText(dataFormatada);}
+        catch (Exception e)
+        {
+            System.out.println("Erro na data: " + e);
+        }
     }
     
     
