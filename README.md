@@ -13,6 +13,7 @@ Este projeto é um sistema de gestão de oficinas baseado na semana academica do
 
 - Linguagem de Programação: Java
 - JPA para persistência de dados
+- Java Swing para interfaces gráficas
 
 ## Diagrama de Classes
 
