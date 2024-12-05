@@ -4,10 +4,9 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -19,7 +18,7 @@ public class Aluno extends Pessoa{
     @Column(length = 15)
     private String matricula;
     
-    @ManyToMany(mappedBy = "alunos")
+    @ManyToMany(mappedBy = "alunos", fetch = FetchType.EAGER)
     private List<Oficina> oficinas;
     
     public Aluno() {
@@ -30,6 +29,10 @@ public class Aluno extends Pessoa{
     public Aluno(String nome) {
         super(nome);
         oficinas = new ArrayList<>();
+    }
+
+    public List<Oficina> getOficinas() {
+        return oficinas;
     }
 
     
@@ -55,8 +58,20 @@ public class Aluno extends Pessoa{
     }
     
     public void addOficina(Oficina o){
+        if (!this.oficinas.contains(o)) {
         this.oficinas.add(o);
+        o.addAluno(this);  // Manter a bidirecionalidade
     }
+    }
+    
+    public void removeOficina(Oficina o) {
+    if (this.oficinas.contains(o)) {
+        this.oficinas.remove(o);
+        o.removeAluno(this);
+    }
+}
+    
+    
 
     @Override
     public String toString() {

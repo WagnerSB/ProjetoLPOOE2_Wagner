@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import model.Aluno;
 import model.Oficina;
 import sistemasemanaacademica.dao.PersistenciaJPA;
 
@@ -16,16 +17,16 @@ import sistemasemanaacademica.dao.PersistenciaJPA;
  * @author 20231PF.CC0021
  */
 public class TelaOficina extends javax.swing.JFrame {
+
     PersistenciaJPA jpa;
-    
+
     /**
      * Creates new form TelaOficina
      */
     public TelaOficina() {
         initComponents();
-        
+
 //        cmbVinculoOficina.addItem(null);
-        
         jpa = new PersistenciaJPA();
         carregarOficinasCadastradas();
     }
@@ -183,21 +184,22 @@ public class TelaOficina extends javax.swing.JFrame {
     private void btnNovaOficinaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovaOficinaActionPerformed
         TelaCadastroOficina telaCadastro = new TelaCadastroOficina(this, rootPaneCheckingEnabled);
         telaCadastro.setVisible(true);
-        
+
         carregarOficinasCadastradas();
     }//GEN-LAST:event_btnNovaOficinaActionPerformed
 
     private void btnRemoverOficinaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverOficinaActionPerformed
         Oficina oficinaSel = lstOficinas.getSelectedValue();
         if (oficinaSel != null) {
-            System.out.println("Oficina: " + oficinaSel.getId());
             try {
                 jpa.conexaoAberta();
 
                 int delOp = JOptionPane.showConfirmDialog(this,
                         "Tem certeza que deseja remover " + oficinaSel.getNome() + "?");
                 if (delOp == JOptionPane.YES_OPTION) {
-                    jpa.remover(oficinaSel);
+                    Oficina of = jpa.getOficinasId(oficinaSel.getId());
+
+                    jpa.remover(of);
                 }
 
                 jpa.fecharConexao();
@@ -210,9 +212,8 @@ public class TelaOficina extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Selecione uma oficina para remover");
         }
     }//GEN-LAST:event_btnRemoverOficinaActionPerformed
- 
-                                     
-    
+
+
     private void btnEditarOficinaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarOficinaActionPerformed
         Oficina oficinaSel = lstOficinas.getSelectedValue();
         if (oficinaSel != null) {
@@ -220,24 +221,23 @@ public class TelaOficina extends javax.swing.JFrame {
             telaEdt.setOficina(oficinaSel);
             telaEdt.setVisible(true);
             carregarOficinasCadastradas();
-            
+
         } else {
             JOptionPane.showMessageDialog(this, "Selecione uma oficina para Editar");
         }
     }//GEN-LAST:event_btnEditarOficinaActionPerformed
 
     private void txtBuscaNomeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscaNomeKeyPressed
-        
+
     }//GEN-LAST:event_txtBuscaNomeKeyPressed
 
     private void txtBuscaNomeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscaNomeKeyReleased
-        if(txtBuscaNome.getText().trim().isEmpty()){
+        if (txtBuscaNome.getText().trim().isEmpty()) {
             carregarOficinasCadastradas();
-        } else{
+        } else {
             jpa.conexaoAberta();
             DefaultListModel modeloLista = new DefaultListModel();
             modeloLista.addAll(jpa.getOficinas(txtBuscaNome.getText().trim()));
-            System.out.println("Oficinas carregados: "+jpa.getOficinas(txtBuscaNome.getText().trim()));
             lstOficinas.setModel(modeloLista);
 
             jpa.fecharConexao();
@@ -281,21 +281,17 @@ public class TelaOficina extends javax.swing.JFrame {
             }
         });
     }
-    
-    
-  
-    
+
     public void carregarOficinasCadastradas() {
         jpa.conexaoAberta();
-        
+
         DefaultListModel modeloLista = new DefaultListModel();
         modeloLista.addAll(jpa.getOficinas());
-        System.out.println("Lista: "+jpa.getOficinas());
-        
+
         lstOficinas.setModel(modeloLista);
         jpa.fecharConexao();
     }
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel areaBotoes;

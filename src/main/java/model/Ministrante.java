@@ -19,7 +19,7 @@ public class Ministrante extends Pessoa{
     private String especialidade;
 
     
-    @OneToMany(mappedBy = "ministrante")
+    @OneToMany(mappedBy = "ministrante", cascade = CascadeType.ALL)
     private List<Oficina> oficinas;
     
     public Ministrante(String nome) {

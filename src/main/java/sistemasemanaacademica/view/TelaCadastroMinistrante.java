@@ -33,11 +33,14 @@ public class TelaCadastroMinistrante extends javax.swing.JDialog {
         txtTitulacao.setText(ministrante.getTitulacao());
         txtEmail.setText(ministrante.getEmail());
 
-
-        LocalDate dataNascimento = ministrante.getDataNascimento(); // Supondo que seja java.time.LocalDate
+        try{
+        LocalDate dataNascimento = ministrante.getDataNascimento();
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String dataFormatada = dataNascimento.format(formato);
         txtDataNascimento.setText(dataFormatada);
+        } catch (Exception e) {
+            System.out.println("Erro na data: " + e);
+        }
     }
     
     
@@ -188,7 +191,11 @@ public class TelaCadastroMinistrante extends javax.swing.JDialog {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         
         ministrante.setNome(txtNome.getText());
+        try{
         ministrante.setDataNascimento(LocalDate.parse(txtDataNascimento.getText(),dtf));
+        } catch (Exception e){
+            System.out.println("Erro ao guardar data: "+ e);
+        }
         ministrante.setEmail(txtEmail.getText());
         ministrante.setEspecialidade(txtEspecialidade.getText());
         ministrante.setTitulacao(txtTitulacao.getText());

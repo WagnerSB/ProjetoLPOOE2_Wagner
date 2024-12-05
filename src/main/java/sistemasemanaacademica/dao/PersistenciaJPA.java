@@ -37,28 +37,18 @@ public class PersistenciaJPA implements InterfaceDB {
 
     @Override
     public void persist(Object o) throws Exception {
-//        entity = getEntityManager();
-//        try {
-//            entity.getTransaction().begin();
-//            entity.persist(o);
-//            entity.getTransaction().commit();
-//        } catch (Exception e) {
-//            if (entity.getTransaction().isActive()) {
-//                entity.getTransaction().rollback();
-//            }
-//        }
-//        
+
         entity = getEntityManager();
         try {
             entity.getTransaction().begin();
-            if (!entity.contains(o)) {;
+            if (!entity.contains(o)) {
                 o = entity.merge(o);
             } else {
                 entity.persist(o);
             }
             entity.getTransaction().commit();
         } catch (Exception e) {
-            System.out.println("Erro ao persistir: "+e);
+            System.out.println("Erro ao persistir: " + e);
             if (entity.getTransaction().isActive()) {
                 entity.getTransaction().rollback();
             }
@@ -75,7 +65,6 @@ public class PersistenciaJPA implements InterfaceDB {
     @Override
     public void remover(Object o) throws Exception {
         entity = getEntityManager();
-//        System.out.println("Object: "+o);
         try {
             entity.getTransaction().begin();
             if (!entity.contains(o)) {
@@ -91,7 +80,6 @@ public class PersistenciaJPA implements InterfaceDB {
             }
         }
     }
-    
 
     public List<Aluno> getAlunos() {
         entity = getEntityManager();
@@ -106,7 +94,7 @@ public class PersistenciaJPA implements InterfaceDB {
         }
 
     }
-    
+
     public List<Aluno> getAlunos(String nome) {
         entity = getEntityManager();
 
@@ -121,8 +109,7 @@ public class PersistenciaJPA implements InterfaceDB {
         }
 
     }
-    
-    
+
     public List<Ministrante> getMinistrantes() {
         entity = getEntityManager();
 
@@ -136,7 +123,7 @@ public class PersistenciaJPA implements InterfaceDB {
         }
 
     }
-    
+
     public List<Ministrante> getMinistrantes(String nome) {
         entity = getEntityManager();
 
@@ -151,8 +138,21 @@ public class PersistenciaJPA implements InterfaceDB {
         }
 
     }
-    
-    
+    public Oficina getOficinasId(int id) {
+        entity = getEntityManager();
+
+        try {
+             TypedQuery<Oficina> query = entity.createQuery("SELECT o FROM Oficina o WHERE o.id = :id", Oficina.class);
+            query.setParameter("id", id);
+
+            return query.getSingleResult();
+        } catch (Exception e) {
+            System.err.println("Erro ao buscar Oficinas: " + e);
+            return null;
+        }
+
+    }
+
     public List<Oficina> getOficinas() {
         entity = getEntityManager();
 
@@ -166,7 +166,7 @@ public class PersistenciaJPA implements InterfaceDB {
         }
 
     }
-    
+
     public List<Oficina> getOficinas(String nome) {
         entity = getEntityManager();
 
@@ -181,4 +181,21 @@ public class PersistenciaJPA implements InterfaceDB {
         }
 
     }
+
+    public List<Oficina> getOficinasAluno(Aluno aluno) {
+        entity = getEntityManager();
+
+        try {
+            TypedQuery<Oficina> query = entity.createQuery(
+                    "SELECT o FROM Oficina o JOIN o.alunos a WHERE a.id = :alunoId", Oficina.class
+            );
+            query.setParameter("alunoId", aluno.getId());
+
+            return query.getResultList();
+        } catch (Exception e) {
+            System.err.println("Erro ao buscar Oficinas: " + e);
+            return null;
+        }
+    }
+
 }

@@ -6,9 +6,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -34,7 +36,7 @@ public class Oficina implements Serializable{
     private double duracao;
     
     
-    @ManyToMany
+    @ManyToMany( fetch = FetchType.EAGER)
     @JoinTable(name = "tb_aluno_oficina", joinColumns = @JoinColumn(name = "oficina_id"), inverseJoinColumns = @JoinColumn(name = "aluno_id"))
     private List<Aluno> alunos;
 
@@ -118,14 +120,50 @@ public class Oficina implements Serializable{
     
     
     public void addAluno(Aluno a) {
-        alunos.add(a);
+        if (!this.alunos.contains(a)) {
+        this.alunos.add(a);
+        a.addOficina(this);  // Manter a bidirecionalidade
     }
+    }
+    
+    public void removeAluno(Aluno a) {
+    if (this.alunos.contains(a)) {
+        this.alunos.remove(a);
+        a.removeOficina(this);
+    }
+}
 
     @Override
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         return this.nome + " - " + sdf.format(this.data);
     }
-    
-    
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 97 * hash + this.id;
+        hash = 97 * hash + Objects.hashCode(this.nome);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Oficina other = (Oficina) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        return Objects.equals(this.nome, other.nome);
+    }
+
+
 }

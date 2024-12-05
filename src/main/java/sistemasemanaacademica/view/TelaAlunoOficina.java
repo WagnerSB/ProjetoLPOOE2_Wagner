@@ -9,25 +9,29 @@ import java.time.format.DateTimeFormatter;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import model.Aluno;
+import model.Oficina;
 import sistemasemanaacademica.dao.PersistenciaJPA;
 
 /**
  *
  * @author 20231PF.CC0021
  */
-public class TelaAluno extends javax.swing.JFrame {
+public class TelaAlunoOficina extends javax.swing.JFrame {
     PersistenciaJPA jpa;
+    Aluno aluno;
+//    Aluno aluno = null;
     
     /**
-     * Creates new form TelaAluno
+     * Creates new form TelaOficina
      */
-    public TelaAluno() {
+    public TelaAlunoOficina(java.awt.Frame parent, boolean modal, Aluno aluno) {
         initComponents();
         
-//        cmbVinculoAluno.addItem(null);
+//        cmbVinculoOficina.addItem(null);
         
         jpa = new PersistenciaJPA();
-        carregarAlunosCadastradas();
+        this.aluno = aluno;
+        carregarOficinasCadastradas();
     }
 
     /**
@@ -45,17 +49,15 @@ public class TelaAluno extends javax.swing.JFrame {
         txtBuscaNome = new javax.swing.JTextField();
         areaListagem = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        lstAlunos = new javax.swing.JList<>();
+        lstOficinas = new javax.swing.JList<>();
         areaBotoes = new javax.swing.JPanel();
-        btnNovoAluno = new javax.swing.JButton();
-        btnEditarAluno = new javax.swing.JButton();
-        btnRemoverAluno = new javax.swing.JButton();
-        btnOficinas = new javax.swing.JButton();
+        btnFazerInscricao = new javax.swing.JButton();
+        btnDesinscrever = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblTitulo.setText("Alunos Cadastrados");
+        lblTitulo.setText("Oficinas do Aluno");
 
         lblBuscaNome.setText("Nome: ");
 
@@ -87,7 +89,7 @@ public class TelaAluno extends javax.swing.JFrame {
                     .addComponent(txtBuscaNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
-        jScrollPane1.setViewportView(lstAlunos);
+        jScrollPane1.setViewportView(lstOficinas);
 
         javax.swing.GroupLayout areaListagemLayout = new javax.swing.GroupLayout(areaListagem);
         areaListagem.setLayout(areaListagemLayout);
@@ -96,7 +98,7 @@ public class TelaAluno extends javax.swing.JFrame {
             .addGroup(areaListagemLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 459, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
         areaListagemLayout.setVerticalGroup(
             areaListagemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -105,31 +107,17 @@ public class TelaAluno extends javax.swing.JFrame {
                 .addGap(0, 39, Short.MAX_VALUE))
         );
 
-        btnNovoAluno.setText("Novo");
-        btnNovoAluno.addActionListener(new java.awt.event.ActionListener() {
+        btnFazerInscricao.setText("Nova Inscricao");
+        btnFazerInscricao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnNovoAlunoActionPerformed(evt);
+                btnFazerInscricaoActionPerformed(evt);
             }
         });
 
-        btnEditarAluno.setText("Editar");
-        btnEditarAluno.addActionListener(new java.awt.event.ActionListener() {
+        btnDesinscrever.setText("Desinscrever");
+        btnDesinscrever.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditarAlunoActionPerformed(evt);
-            }
-        });
-
-        btnRemoverAluno.setText("Remover");
-        btnRemoverAluno.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRemoverAlunoActionPerformed(evt);
-            }
-        });
-
-        btnOficinas.setText("Oficinas");
-        btnOficinas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnOficinasActionPerformed(evt);
+                btnDesinscreverActionPerformed(evt);
             }
         });
 
@@ -138,28 +126,19 @@ public class TelaAluno extends javax.swing.JFrame {
         areaBotoesLayout.setHorizontalGroup(
             areaBotoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(areaBotoesLayout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(btnNovoAluno, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(55, 55, 55)
-                .addComponent(btnEditarAluno, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
-                .addComponent(btnRemoverAluno, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, areaBotoesLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnOficinas, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(96, 96, 96))
+                .addGap(74, 74, 74)
+                .addComponent(btnFazerInscricao, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnDesinscrever, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(84, 84, 84))
         );
         areaBotoesLayout.setVerticalGroup(
             areaBotoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, areaBotoesLayout.createSequentialGroup()
-                .addComponent(btnOficinas)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
                 .addGroup(areaBotoesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnNovoAluno)
-                    .addComponent(btnEditarAluno)
-                    .addComponent(btnRemoverAluno))
-                .addGap(41, 41, 41))
+                    .addComponent(btnFazerInscricao)
+                    .addComponent(btnDesinscrever))
+                .addContainerGap(102, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -193,79 +172,61 @@ public class TelaAluno extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnNovoAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoAlunoActionPerformed
-        TelaCadastroAluno telaCadastro = new TelaCadastroAluno(this, rootPaneCheckingEnabled);
+    private void btnFazerInscricaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFazerInscricaoActionPerformed
+        TelaCadastroAlunoOficina telaCadastro = new TelaCadastroAlunoOficina(this, rootPaneCheckingEnabled, aluno);
         telaCadastro.setVisible(true);
         
-        carregarAlunosCadastradas();
-    }//GEN-LAST:event_btnNovoAlunoActionPerformed
+        carregarOficinasCadastradas();
+    }//GEN-LAST:event_btnFazerInscricaoActionPerformed
 
-    private void btnRemoverAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverAlunoActionPerformed
-        Aluno alunoSel = lstAlunos.getSelectedValue();
-        if (alunoSel != null) {
+    private void btnDesinscreverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesinscreverActionPerformed
+        Oficina oficinaSel = lstOficinas.getSelectedValue();;
+        if (oficinaSel != null) {
             try {
                 jpa.conexaoAberta();
 
                 int delOp = JOptionPane.showConfirmDialog(this,
-                        "Tem certeza que deseja remover " + alunoSel.getNome() + "?");
+                        "Tem certeza que deseja remover " + oficinaSel.getNome() + "?");
                 if (delOp == JOptionPane.YES_OPTION) {
-                    jpa.remover(alunoSel);
+                    aluno.getOficinas().size();
+                    oficinaSel.getAlunos().size();
+
+                    aluno.removeOficina(oficinaSel);
+                    oficinaSel.removeAluno(aluno);
+                    
+                    jpa.persist(aluno);
+                    jpa.persist(oficinaSel);
                 }
 
                 jpa.fecharConexao();
-                carregarAlunosCadastradas();
+                carregarOficinasCadastradas();
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this,
-                        "Erro ao remover aluno " + alunoSel + "\n" + e);
+                        "Erro ao se desinscrever " + oficinaSel + "\n" + e);
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Selecione uma aluno para remover");
+            JOptionPane.showMessageDialog(this, "Selecione uma oficina para se desinscrever");
         }
-    }//GEN-LAST:event_btnRemoverAlunoActionPerformed
+    }//GEN-LAST:event_btnDesinscreverActionPerformed
  
                                      
     
-    private void btnEditarAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarAlunoActionPerformed
-        Aluno alunoSel = lstAlunos.getSelectedValue();
-        if (alunoSel != null) {
-            TelaCadastroAluno telaEdt = new TelaCadastroAluno(this, rootPaneCheckingEnabled);
-            telaEdt.setAluno(alunoSel);
-            telaEdt.setVisible(true);
-            carregarAlunosCadastradas();
-            
-        } else {
-            JOptionPane.showMessageDialog(this, "Selecione uma aluno para Editar");
-        }
-    }//GEN-LAST:event_btnEditarAlunoActionPerformed
-
     private void txtBuscaNomeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscaNomeKeyPressed
         
     }//GEN-LAST:event_txtBuscaNomeKeyPressed
 
     private void txtBuscaNomeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscaNomeKeyReleased
         if(txtBuscaNome.getText().trim().isEmpty()){
-            carregarAlunosCadastradas();
+            carregarOficinasCadastradas();
         } else{
             jpa.conexaoAberta();
             DefaultListModel modeloLista = new DefaultListModel();
-            modeloLista.addAll(jpa.getAlunos(txtBuscaNome.getText().trim()));
-            lstAlunos.setModel(modeloLista);
+            modeloLista.addAll(jpa.getOficinas(txtBuscaNome.getText().trim()));
+            lstOficinas.setModel(modeloLista);
 
             jpa.fecharConexao();
         }
     }//GEN-LAST:event_txtBuscaNomeKeyReleased
-
-    private void btnOficinasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOficinasActionPerformed
-        Aluno alunoSel = lstAlunos.getSelectedValue();
-        if (alunoSel != null) {
-            TelaAlunoOficina telaAlunoOficina = new TelaAlunoOficina(this, rootPaneCheckingEnabled, alunoSel);
-            telaAlunoOficina.setVisible(true);
-            
-        } else {
-            JOptionPane.showMessageDialog(this, "Selecione uma aluno para editar as oficinas");
-        }
-        
-    }//GEN-LAST:event_btnOficinasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -284,35 +245,41 @@ public class TelaAluno extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaAluno.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaAlunoOficina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaAluno.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaAlunoOficina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaAluno.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaAlunoOficina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TelaAluno.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaAlunoOficina.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new TelaAluno().setVisible(true);
-            }
-        });
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new TelaAlunoOficina(this, true).setVisible(true);
+//            }
+//        });
     }
     
     
   
     
-    public void carregarAlunosCadastradas() {
+    public void carregarOficinasCadastradas() {
         jpa.conexaoAberta();
         
         DefaultListModel modeloLista = new DefaultListModel();
-        modeloLista.addAll(jpa.getAlunos());
+        modeloLista.addAll(jpa.getOficinasAluno(aluno));
         
-        lstAlunos.setModel(modeloLista);
+        lstOficinas.setModel(modeloLista);
         jpa.fecharConexao();
     }
     
@@ -321,14 +288,12 @@ public class TelaAluno extends javax.swing.JFrame {
     private javax.swing.JPanel areaBotoes;
     private javax.swing.JPanel areaFiltros;
     private javax.swing.JPanel areaListagem;
-    private javax.swing.JButton btnEditarAluno;
-    private javax.swing.JButton btnNovoAluno;
-    private javax.swing.JButton btnOficinas;
-    private javax.swing.JButton btnRemoverAluno;
+    private javax.swing.JButton btnDesinscrever;
+    private javax.swing.JButton btnFazerInscricao;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblBuscaNome;
     private javax.swing.JLabel lblTitulo;
-    private javax.swing.JList<Aluno> lstAlunos;
+    private javax.swing.JList<Oficina> lstOficinas;
     private javax.swing.JTextField txtBuscaNome;
     // End of variables declaration//GEN-END:variables
 }

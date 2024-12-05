@@ -37,6 +37,7 @@ public class TelaCadastroOficina extends javax.swing.JDialog {
         txtNome.setText(oficina.getNome());
         txtDescricao.setText(oficina.getDescricao());
         txtDuracao.setText(Double.toString(oficina.getDuracao()));
+        cmbMinistrante.setSelectedItem(oficina.getMinistrante());
 
 
         Date dataOficina = oficina.getData(); // Supondo que seja java.time.LocalDate
@@ -207,7 +208,6 @@ public class TelaCadastroOficina extends javax.swing.JDialog {
         oficina.setDescricao(txtDescricao.getText());
         oficina.setDuracao(Double.parseDouble(txtDuracao.getText()));
         oficina.setMinistrante((Ministrante) cmbMinistrante.getSelectedItem());
-        System.out.println("Ministrante: " + cmbMinistrante.getSelectedItem());
         
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         try {
